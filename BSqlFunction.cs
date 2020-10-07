@@ -465,7 +465,7 @@ namespace CodeHelper
             stringBuilder.AppendLine("");
             //写类名
             stringBuilder.AppendLine("[Serializable]");
-            stringBuilder.AppendLine(string.Format("[Table(Name = \"{0}\")]", tableInfo.TableName));
+            stringBuilder.AppendLine(string.Format("[Table(\"{0}\")]", tableInfo.TableName));
             stringBuilder.AppendLine("public class " + className);
             stringBuilder.AppendLine("{");
 
@@ -498,11 +498,9 @@ namespace CodeHelper
                 propertiesStr.AppendLine("\t/// " + field.Description);
                 propertiesStr.AppendLine("\t/// </summary>");
 
-                propertiesStr.AppendFormat("[Column(Name = \"{0}\"", field.FieldName);
-                if (field.IsPrimaryKey) propertiesStr.Append(", IsPrimaryKey = true");
-                if (field.IsIdentity) propertiesStr.Append(", IsDbGenerated = true");
-                if (!field.IsNullAble) propertiesStr.Append(", CanBeNull = false");
-                propertiesStr.AppendFormat(", DbType = \"{0}\")]", field.FieldType);
+                if (field.IsPrimaryKey) propertiesStr.Append("\t[key]");
+                propertiesStr.AppendLine();
+                propertiesStr.AppendFormat("[Column(\"{0}\")]", field.FieldName);
                 propertiesStr.AppendLine();
 
                 propertiesStr.Append("\tpublic ");
