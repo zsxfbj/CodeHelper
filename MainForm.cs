@@ -6,7 +6,7 @@ namespace CodeHelper
 {
     public partial class MainForm : Form
     {
-        private Dictionary<String, List<FieldInfo>> tableFields = new Dictionary<String, List<FieldInfo>>();
+        private readonly Dictionary<String, List<FieldInfo>> tableFields = new Dictionary<String, List<FieldInfo>>();
         private string tableName;
 
         public MainForm()
@@ -23,10 +23,7 @@ namespace CodeHelper
                 case CodeTypes.Java:
 
                     rbJava.Checked = true;
-                    break;
-                case CodeTypes.DooPHP :
-                    rbDooPHP.Checked = true;
-                    break;
+                    break;              
             }
         }
 
@@ -35,7 +32,7 @@ namespace CodeHelper
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void topMenuItem1_Click(object sender, EventArgs e)
+        private void TopMenuItem1_Click(object sender, EventArgs e)
         {
             DbConfig dbFrm = new DbConfig();
             if (dbFrm.ShowDialog() == DialogResult.OK)
@@ -44,7 +41,7 @@ namespace CodeHelper
             }
         }
 
-        private void topMenuItem2_Click(object sender, EventArgs e)
+        private void TopMenuItem2_Click(object sender, EventArgs e)
         {
             DbConfigInfo dbConfigInfo = DbConfigUtil.GetDbConfig();
             if (dbConfigInfo != null)
@@ -63,7 +60,7 @@ namespace CodeHelper
             }
         }
 
-        private void dataTables_AfterSelect(object sender, TreeViewEventArgs e)
+        private void DataTables_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Parent == null)
             {
@@ -74,7 +71,7 @@ namespace CodeHelper
 
         #region private void btnCreateModel_Click(object sender, EventArgs e)
 
-        private void btnCreateModel_Click(object sender, EventArgs e)
+        private void BtnCreateModel_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txtClassName.Text) && !string.IsNullOrEmpty(tableName))
             {
@@ -87,7 +84,7 @@ namespace CodeHelper
         }
         #endregion  private void btnCreateModel_Click(object sender, EventArgs e)
 
-        private void btnCreateDAL_Click(object sender, EventArgs e)
+        private void BtnCreateDAL_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtClassName.Text))
             {
@@ -108,22 +105,17 @@ namespace CodeHelper
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void rbCSharp4_CheckedChanged(object sender, EventArgs e)
+        private void RbCSharp4_CheckedChanged(object sender, EventArgs e)
         {
             Global.GetInstance().CodeType = CodeTypes.CSharp4;
         }
 
-        private void rbCSharp2_CheckedChanged(object sender, EventArgs e)
+        private void RbCSharp2_CheckedChanged(object sender, EventArgs e)
         {
             Global.GetInstance().CodeType = CodeTypes.CSharp;
-        }
+        }     
 
-        private void rbDooPHP_CheckedChanged(object sender, EventArgs e)
-        {
-            Global.GetInstance().CodeType = CodeTypes.DooPHP;
-        }
-
-        private void rbJava_CheckedChanged(object sender, EventArgs e)
+        private void RbJava_CheckedChanged(object sender, EventArgs e)
         {
             Global.GetInstance().CodeType = CodeTypes.Java;
         }
@@ -145,33 +137,37 @@ namespace CodeHelper
             {
                 foreach (TableInfo tableInfo in Global.GetInstance().Tables)
                 {
-                    TreeNode parentNode = new TreeNode();
-                    parentNode.Name = "table_" + tableInfo.TableName;
-                    parentNode.Text = tableInfo.TableName;
+                    TreeNode parentNode = new TreeNode
+                    {
+                        Name = "table_" + tableInfo.TableName,
+                        Text = tableInfo.TableName
+                    };
 
                     foreach (FieldInfo fieldInfo in tableInfo.Fields)
                     {
-                        TreeNode node = new TreeNode();
-                        node.Name = "table_" + tableInfo.TableName + "_field_" + fieldInfo.FieldName;
+                        TreeNode node = new TreeNode
+                        {
+                            Name = "table_" + tableInfo.TableName + "_field_" + fieldInfo.FieldName,
 
-                        node.Text = fieldInfo.FieldName + @" [" + fieldInfo.FieldType + @"(" + fieldInfo.FieldLength + @")";
+                            Text = fieldInfo.FieldName + @" [" + fieldInfo.FieldType + @"(" + fieldInfo.FieldLength + @")"
+                        };
                         if (fieldInfo.IsPrimaryKey)
                         {
-                            node.Text = node.Text + @", pk";
+                            node.Text += @", pk";
                         }
                         if (fieldInfo.IsIdentity)
                         {
-                            node.Text = node.Text + @", identity";
+                            node.Text += @", identity";
                         }
                         if (fieldInfo.IsNullAble)
                         {
-                            node.Text = node.Text + @",null";
+                            node.Text += @",null";
                         }
                         else
                         {
-                            node.Text = node.Text + @",not null";
+                            node.Text += @",not null";
                         }
-                        node.Text = node.Text + @"]";
+                        node.Text += @"]";
                         parentNode.Nodes.Add(node);
                     }
                     dataTables.Nodes.Add(parentNode);
@@ -185,7 +181,7 @@ namespace CodeHelper
 
         
         #region unused
-        private void btnCreateJava_Click(object sender, EventArgs e)
+        private void BtnCreateJava_Click(object sender, EventArgs e)
         {
             //txtCode.Text = "";
             //if(txtClassName.Text.Trim() != string.Empty)
@@ -401,273 +397,7 @@ namespace CodeHelper
             //    txtCode.Text = sb.ToString();
 
             //}
-        }
-
-        private void btnCreatePHP_Click(object sender, EventArgs e)
-        {
-            //txtCode.Text = "";
-            //if (txtClassName.Text.Trim() != string.Empty)
-            //{
-            //    DBConfigInfo dbConfigInfo = DBConfigUtil.GetDBConfigInfo();
-            //    StringBuilder sb = new StringBuilder();
-
-            //    //生成java model部分
-            //    StringBuilder fieldString = new StringBuilder();
-
-            //    StringBuilder constructorString = new StringBuilder();
-            //    StringBuilder parameterString = new StringBuilder();
-            //    //java Sql部分
-            //    string insertSql = "INSERT INTO " + dbConfigInfo.DataBase + "." + dataTables.SelectedNode.Text + " ( {0} ) VALUES ( {1} )";
-            //    string updateSql = "UPDATE " + dbConfigInfo.DataBase + "." + dataTables.SelectedNode.Text + " SET {0} WHERE {1}";
-            //    string deleteSql = "DELETE FROM " + dbConfigInfo.DataBase + "."  + dataTables.SelectedNode.Text + " WHERE {0}";
-            //    string selectSql = "SELECT {0} FROM " + dbConfigInfo.DataBase + "." + dataTables.SelectedNode.Text + " WHERE {1}";
-
-            //    StringBuilder insertFields = new StringBuilder();
-            //    StringBuilder selectFields = new StringBuilder();
-            //    StringBuilder valuesString = new StringBuilder();
-            //    StringBuilder updateFields = new StringBuilder();
-            //    StringBuilder whereParams = new StringBuilder();
-            //    StringBuilder rsString = new StringBuilder();
-
-            //    sb.Append("class " + txtClassName.Text.Trim() + " {" + Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-
-            //    constructorString.Append("\tpublic function __construct(@parms) { " + Environment.NewLine);
-
-
-            //    List<FieldInfo> fields = tableFields[tableName];
-            //    bool hasAutoIncrement = false;
-            //    foreach (FieldInfo info in fields)
-            //    {
-            //        selectFields.Append(info.FieldName + ", ");
-            //        rsString.Append("$row[\""+info.FieldName+"\"],");
-
-            //        string firstAlphabet = info.FieldName.Substring(0, 1);
-
-
-            //        if (info.Comment.Length > 0)
-            //        {
-            //            fieldString.Append("\t/**" + Environment.NewLine);
-            //            fieldString.Append("\t*" + info.Comment + Environment.NewLine);
-            //            fieldString.Append("\t*/" + Environment.NewLine);
-            //        }
-            //        fieldString.Append("\tprivate ");
-
-            //        fieldString.Append("$" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) );
-            //        if (info.FieldTye.IndexOf("bigint", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("=0;" + Environment.NewLine);
-            //            parameterString.Append(" $in_" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "=0,");
-            //            if (info.Extra.Equals("auto_increment"))
-            //            {
-            //                whereParams.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0,1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName );
-            //                hasAutoIncrement = true;
-            //            }
-            //            else if (hasAutoIncrement == false && info.FieldKey.Equals("PRI"))
-            //            {
-            //                whereParams.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0,1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName+" AND ");
-            //                insertFields.Append(info.FieldName + ", ");
-            //                valuesString.Append("$" + txtClassName.Text.Substring(0,1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName+",");
-            //            }
-            //            else
-            //            {
-            //                insertFields.Append(info.FieldName + ", ");
-            //                updateFields.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ", ");
-            //                valuesString.Append("$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ",");
-            //            }
-            //        }
-            //        else if (info.FieldTye.IndexOf("tinyint", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("=0;" + Environment.NewLine);
-            //            parameterString.Append(" $in_" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "=0,");
-            //            if (info.Extra.Equals("auto_increment"))
-            //            {
-            //                whereParams.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName);
-            //                hasAutoIncrement = true;
-            //            }
-            //            else if (hasAutoIncrement == false && info.FieldKey.Equals("PRI"))
-            //            {
-            //                whereParams.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + " AND ");
-            //                insertFields.Append(info.FieldName + ", ");
-            //                valuesString.Append("$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ",");
-            //            }
-            //            else
-            //            {
-            //                insertFields.Append(info.FieldName + ", ");
-            //                updateFields.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ", ");
-            //                valuesString.Append("$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ",");
-            //            }
-            //        }
-            //        else if (info.FieldTye.IndexOf("int", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("=0;" + Environment.NewLine);
-            //            parameterString.Append(" $in_" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "=0,");
-            //            if (info.Extra.Equals("auto_increment"))
-            //            {
-            //                whereParams.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName);
-            //                hasAutoIncrement = true;
-            //            }
-            //            else if (hasAutoIncrement == false && info.FieldKey.Equals("PRI"))
-            //            {
-            //                whereParams.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + " AND ");
-            //                insertFields.Append(info.FieldName + ", ");
-            //                valuesString.Append("$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ",");
-            //            }
-            //            else
-            //            {
-            //                insertFields.Append(info.FieldName + ", ");
-            //                updateFields.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ", ");
-            //                valuesString.Append("$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ",");
-            //            }
-            //        }
-            //        else if (info.FieldTye.IndexOf("char", StringComparison.OrdinalIgnoreCase) != -1 || info.FieldTye.IndexOf("blob", StringComparison.OrdinalIgnoreCase) != -1 || info.FieldTye.IndexOf("text", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("='';" + Environment.NewLine);
-            //            parameterString.Append(" $in_" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "='',");
-            //            if (info.Extra.Equals("auto_increment"))
-            //            {
-            //                whereParams.Append(info.FieldName + "='$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "'");
-            //                hasAutoIncrement = true;
-            //            }
-            //            else if (hasAutoIncrement == false && info.FieldKey.Equals("PRI"))
-            //            {
-            //                whereParams.Append(info.FieldName + "='$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "' AND ");
-            //                insertFields.Append(info.FieldName + ", ");
-            //                valuesString.Append("'$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "',");
-            //            }
-            //            else
-            //            {
-            //                insertFields.Append(info.FieldName + ", ");
-            //                updateFields.Append(info.FieldName + "='$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "', ");
-            //                valuesString.Append("'$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "',");
-            //            }
-            //        }
-            //        else if (info.FieldTye.IndexOf("float", StringComparison.OrdinalIgnoreCase) != -1 || info.FieldTye.IndexOf("decimal", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("=0.0;" + Environment.NewLine);
-            //            parameterString.Append(" $in_" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "=0.0,");
-            //            if (info.Extra.Equals("auto_increment"))
-            //            {
-            //                whereParams.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName);
-            //                hasAutoIncrement = true;
-            //            }
-            //            else if (hasAutoIncrement == false && info.FieldKey.Equals("PRI"))
-            //            {
-            //                whereParams.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + " AND ");
-            //                insertFields.Append(info.FieldName + ", ");
-            //                valuesString.Append("$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ",");
-            //            }
-            //            else
-            //            {
-            //                insertFields.Append(info.FieldName + ", ");
-            //                updateFields.Append(info.FieldName + "=$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ", ");
-            //                valuesString.Append("$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + ",");
-            //            }
-            //        }
-            //        else if (info.FieldTye.IndexOf("datetime", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "';" + Environment.NewLine);
-            //            parameterString.Append(" $in_" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "='" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',");
-            //            if (info.Extra.Equals("auto_increment"))
-            //            {
-            //                whereParams.Append(info.FieldName + "='$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "'");
-            //                hasAutoIncrement = true;
-            //            }
-            //            else if (hasAutoIncrement == false && info.FieldKey.Equals("PRI"))
-            //            {
-            //                whereParams.Append(info.FieldName + "='$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "' AND ");
-            //                insertFields.Append(info.FieldName + ", ");
-            //                valuesString.Append("'$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "',");
-            //            }
-            //            else
-            //            {
-            //                insertFields.Append(info.FieldName + ", ");
-            //                updateFields.Append(info.FieldName + "='$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "', ");
-            //                valuesString.Append("'$" + txtClassName.Text.Substring(0, 1).ToLower() + txtClassName.Text.Substring(1) + "->" + info.FieldName + "',");
-            //            }
-            //        }
-            //        rsString.Append(Environment.NewLine);
-
-            //        constructorString.Append("\t\t$this->" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + " = $in_" + firstAlphabet.ToUpper() +
-            //                         info.FieldName.Substring(1) + ";" + Environment.NewLine);
-
-            //    }
-            //    constructorString.Append("\t}" + Environment.NewLine);
-
-            //    sb.Append(fieldString.ToString());
-            //    sb.Append(Environment.NewLine);
-            //    string parmString = parameterString.Remove(parameterString.Length - 1, 1).ToString();
-            //    sb.Append(constructorString);
-            //    sb.Replace("@parms", parmString);
-
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t//__get()：获取属性值");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\tpublic function __get($property_name){ ");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t\tif(isset($this->$property_name)){");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t\t\treturn($this->$property_name);");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t\t}");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t\telse {");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t\t\treturn NULL;");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t\t}");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t}");
-            //    sb.Append(Environment.NewLine);
-
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t//__set()：设置单个私有数据属性值，用于少量的修改数据");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\tpublic function __set($property_name, $value) {");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t\t$this->$property_name = $value;");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("\t}");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("}");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-
-            //    //生成java sql部分
-
-            //    sb.Append("//MySQL 操作部分");
-
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append("public class " + txtClassName.Text.Replace("Info", "").Trim() + " {" + Environment.NewLine);
-
-            //    sb.Append("//private static final String SQL_INSERT_" + dataTables.SelectedNode.Text.ToUpper() + " = \"" + string.Format(insertSql, insertFields.Remove(insertFields.Length - 2, 2), valuesString.Remove(valuesString.Length - 1, 1)) + "\";");
-            //    sb.Append(Environment.NewLine);
-            //    /*
-            //    if(whereParams.Length > 0)
-            //    {
-            //        whereParams.Remove(whereParams.Length - 4, 4);
-            //    }
-            //    */
-            //    sb.Append("//private final static String SQL_UPDATE_" + dataTables.SelectedNode.Text.ToUpper() + " = \"" + string.Format(updateSql, updateFields.Remove(updateFields.Length - 2, 2), whereParams) + "\";");
-            //    sb.Append(Environment.NewLine);
-
-            //    sb.Append("//private final static String SQL_DELETE_" + dataTables.SelectedNode.Text.ToUpper() + " = \"" + string.Format(deleteSql, whereParams) + "\";");
-            //    sb.Append(Environment.NewLine);
-
-            //    sb.Append("//private final static String SQL_SELECT_" + dataTables.SelectedNode.Text.ToUpper() + " = \"" + string.Format(selectSql, selectFields.Remove(selectFields.Length - 2, 2), whereParams) + "\";");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-
-            //    sb.Append(rsString.ToString());
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-
-            //    sb.Append("}");
-            //    txtCode.Text = sb.ToString();
-
-            //}
-        }
+        }       
 
         #endregion unused
 

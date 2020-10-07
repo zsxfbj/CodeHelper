@@ -81,10 +81,12 @@ order by  a.id,a.colorder";
                     {
                         while (rdr.Read())
                         {
-                            TableInfo tableInfo = new TableInfo();
-                            tableInfo.TableName = rdr.IsDBNull(0) ? string.Empty : rdr.GetString(0);
+                            TableInfo tableInfo = new TableInfo
+                            {
+                                TableName = rdr.IsDBNull(0) ? string.Empty : rdr.GetString(0)
+                            };
 
-                            tableInfo.Fields = getFields(tableInfo.TableName);
+                            tableInfo.Fields = GetFields(tableInfo.TableName);
                             tables.Add(tableInfo);
                         }
                         rdr.Close();
@@ -113,9 +115,9 @@ order by  a.id,a.colorder";
                         {
                             case CodeTypes.CSharp:
                             case CodeTypes.CSharp4:
-                                return getCSharpSqlDalStr(tableInfo);
+                                return GetCSharpSqlDalStr(tableInfo);
                             case CodeTypes.Java:
-                                return getJavaMysqlDalStr(tableInfo);
+                                return GetJavaMysqlDalStr(tableInfo);
                             default:
                                 return string.Empty;
                         }
@@ -138,7 +140,7 @@ order by  a.id,a.colorder";
                         {
                             case CodeTypes.CSharp:
                             case CodeTypes.CSharp4:
-                                return getCSharpInsertFunc(className, tableInfo);
+                                return GetCSharpInsertFunc(className, tableInfo);
 
                             default:
                                 return string.Empty;
@@ -168,7 +170,7 @@ order by  a.id,a.colorder";
                         {
                             case CodeTypes.CSharp:
                             case CodeTypes.CSharp4:
-                                return getCSharpBulkInsertFunc(className, tableInfo);
+                                return GetCSharpBulkInsertFunc(className, tableInfo);
 
                             default:
                                 return string.Empty;
@@ -191,7 +193,7 @@ order by  a.id,a.colorder";
                         {
                             case CodeTypes.CSharp:
                             case CodeTypes.CSharp4:
-                                return getCSharpUpdateFunc(className, tableInfo);
+                                return GetCSharpUpdateFunc(className, tableInfo);
 
                             default:
                                 return string.Empty;
@@ -220,7 +222,7 @@ order by  a.id,a.colorder";
                         {
                             case CodeTypes.CSharp:
                             case CodeTypes.CSharp4:
-                                return getCSharpDeleteFunc(tableInfo);
+                                return GetCSharpDeleteFunc(tableInfo);
 
                             default:
                                 return string.Empty;
@@ -243,7 +245,7 @@ order by  a.id,a.colorder";
                         {
                             case CodeTypes.CSharp:
                             case CodeTypes.CSharp4:
-                                return getCSharpSelectFunc(className, tableInfo);
+                                return GetCSharpSelectFunc(className, tableInfo);
 
                             default:
                                 return string.Empty;
@@ -266,7 +268,7 @@ order by  a.id,a.colorder";
                         {
                             case CodeTypes.CSharp:
                             case CodeTypes.CSharp4:
-                                return getCSharpSelectAllFunc(className, tableInfo);
+                                return GetCSharpSelectAllFunc(className, tableInfo);
 
                             default:
                                 return string.Empty;
@@ -289,7 +291,7 @@ order by  a.id,a.colorder";
                         {
                             case CodeTypes.CSharp:
                             case CodeTypes.CSharp4:
-                                return getCSharpPrivateFuncs(className, tableInfo);
+                                return GetCSharpPrivateFuncs(className, tableInfo);
 
                             default:
                                 return string.Empty;
@@ -312,7 +314,7 @@ order by  a.id,a.colorder";
         /// </summary>
         /// <param name="tableName"></param>
         /// <returns></returns>
-        private List<FieldInfo> getFields(string tableName)
+        private List<FieldInfo> GetFields(string tableName)
         {
             List<FieldInfo> fields = new List<FieldInfo>();
             if (Global.GetInstance().SQLServerConn() != null && Global.GetInstance().DB != null)
@@ -326,14 +328,16 @@ order by  a.id,a.colorder";
                     {
                         while (rdr.Read())
                         {
-                            FieldInfo fieldInfo = new FieldInfo();
-                            fieldInfo.FieldName = rdr.IsDBNull(1) ? string.Empty : rdr.GetString(1);
-                            fieldInfo.IsIdentity = (rdr.GetInt32(2) == 1);
-                            fieldInfo.IsPrimaryKey = (rdr.GetInt32(3) == 1);
-                            fieldInfo.FieldType = rdr.GetString(4);
-                            fieldInfo.FieldLength = rdr.GetInt32(5);
-                            fieldInfo.IsNullAble = (rdr.GetInt32(6) == 1);
-                            fieldInfo.Description = rdr.IsDBNull(8) ? string.Empty : rdr.GetString(8);
+                            FieldInfo fieldInfo = new FieldInfo
+                            {
+                                FieldName = rdr.IsDBNull(1) ? string.Empty : rdr.GetString(1),
+                                IsIdentity = (rdr.GetInt32(2) == 1),
+                                IsPrimaryKey = (rdr.GetInt32(3) == 1),
+                                FieldType = rdr.GetString(4),
+                                FieldLength = rdr.GetInt32(5),
+                                IsNullAble = (rdr.GetInt32(6) == 1),
+                                Description = rdr.IsDBNull(8) ? string.Empty : rdr.GetString(8)
+                            };
                             fields.Add(fieldInfo);
                         }
                         rdr.Close();
@@ -356,7 +360,7 @@ order by  a.id,a.colorder";
         /// </summary>
         /// <param name="tableInfo"></param>
         /// <returns></returns>
-        private string getCSharpSqlDalStr(TableInfo tableInfo)
+        private string GetCSharpSqlDalStr(TableInfo tableInfo)
         {
             //定义输出的内容
             StringBuilder sb = new StringBuilder();
@@ -485,7 +489,7 @@ order by  a.id,a.colorder";
         /// </summary>
         /// <param name="tableInfo"></param>
         /// <returns></returns>
-        private string getJavaMysqlDalStr(TableInfo tableInfo)
+        private string GetJavaMysqlDalStr(TableInfo tableInfo)
         {
             //定义输出的内容
             StringBuilder sb = new StringBuilder();
@@ -658,7 +662,7 @@ order by  a.id,a.colorder";
         #endregion
 
         #region private string getCSharpInsertFunc(string className, TableInfo tableInfo)
-        private string getCSharpInsertFunc(string className, TableInfo tableInfo)
+        private string GetCSharpInsertFunc(string className, TableInfo tableInfo)
         {
             //定义总的输出
             StringBuilder sb = new StringBuilder();
@@ -685,7 +689,7 @@ order by  a.id,a.colorder";
 
                 if (!fieldInfo.IsIdentity)
                 {
-                    sqlParamStr.AppendLine(string.Format("\t\t\tnew SqlParameter({0}, SqlDbType.{1}),", string.Format(ConstVars.PARM_NAME, fieldInfo.FieldName.ToUpper().Replace("_", "")), getSqlDbType(fieldInfo)));
+                    sqlParamStr.AppendLine(string.Format("\t\t\tnew SqlParameter({0}, SqlDbType.{1}),", string.Format(ConstVars.PARM_NAME, fieldInfo.FieldName.ToUpper().Replace("_", "")), GetSqlDbType(fieldInfo)));
 
                     sqlParamValueStr.AppendLine(string.Format("\t\tparms[{0}].Value = {1}.{2};", i, modelObjName, fieldPropertyName));
 
@@ -731,7 +735,7 @@ order by  a.id,a.colorder";
         #endregion private string getCSharpInsertFunc(string className, TableInfo tableInfo)
 
         #region private string getCSharpBulkInsertFunc(string className, TableInfo tableInfo)
-        private string getCSharpBulkInsertFunc(string className, TableInfo tableInfo)
+        private string GetCSharpBulkInsertFunc(string className, TableInfo tableInfo)
         {
             //定义总的输出
             StringBuilder sb = new StringBuilder();
@@ -794,7 +798,7 @@ order by  a.id,a.colorder";
                 if (!fieldInfo.IsIdentity)
                 {
                     string fieldPropertyName = BSqlFunction.GetPropertyName(fieldInfo.FieldName);
-                    sb.AppendLine("\t\t\tSqlParameter parm" + fieldPropertyName + " = new SqlParameter(string.Format(" + "\"@" + fieldInfo.FieldName + "{0}\",i), SqlDbType." + getSqlDbType(fieldInfo) + "),");
+                    sb.AppendLine("\t\t\tSqlParameter parm" + fieldPropertyName + " = new SqlParameter(string.Format(" + "\"@" + fieldInfo.FieldName + "{0}\",i), SqlDbType." + GetSqlDbType(fieldInfo) + "),");
                     sb.AppendLine("\t\t\tparm" + fieldPropertyName + ".Value = " + modelObjName + "." + fieldPropertyName + ";");
                     sb.AppendLine("\t\t\tparms.Add(parm" + fieldPropertyName + ");");
                 }
@@ -845,7 +849,7 @@ order by  a.id,a.colorder";
         /// <param name="className"></param>
         /// <param name="tableInfo"></param>
         /// <returns></returns>
-        private string getCSharpUpdateFunc(string className, TableInfo tableInfo)
+        private string GetCSharpUpdateFunc(string className, TableInfo tableInfo)
         {
             //定义总的输出
             StringBuilder sb = new StringBuilder();
@@ -869,7 +873,7 @@ order by  a.id,a.colorder";
             foreach (FieldInfo fieldInfo in tableInfo.Fields)
             {
                 string fieldPropertyName = BSqlFunction.GetPropertyName(fieldInfo.FieldName);
-                sqlParamStr.AppendLine(string.Format("\t\t\tnew SqlParameter({0}, SqlDbType.{1}),", string.Format(ConstVars.PARM_NAME, fieldInfo.FieldName.ToUpper().Replace("_", "")), getSqlDbType(fieldInfo)));
+                sqlParamStr.AppendLine(string.Format("\t\t\tnew SqlParameter({0}, SqlDbType.{1}),", string.Format(ConstVars.PARM_NAME, fieldInfo.FieldName.ToUpper().Replace("_", "")), GetSqlDbType(fieldInfo)));
                 sqlParamValueStr.AppendLine(string.Format("\t\tparms[{0}].Value = {1}.{2};", i, modelObjName, fieldPropertyName));
 
                 i++;
@@ -916,7 +920,7 @@ order by  a.id,a.colorder";
 
         #region private string getCSharpDeleteFunc(TableInfo tableInfo)
 
-        private string getCSharpDeleteFunc(TableInfo tableInfo)
+        private string GetCSharpDeleteFunc(TableInfo tableInfo)
         {
             //定义总的输出
             StringBuilder sb = new StringBuilder();
@@ -1006,7 +1010,7 @@ order by  a.id,a.colorder";
         #endregion private string getCSharpDeleteFunc(TableInfo tableInfo)
 
         #region private string getCSharpSelectFunc(string className, TableInfo tableInfo)
-        private string getCSharpSelectFunc(string className, TableInfo tableInfo)
+        private string GetCSharpSelectFunc(string className, TableInfo tableInfo)
         {
             //定义总的输出
             StringBuilder sb = new StringBuilder();
@@ -1115,7 +1119,7 @@ order by  a.id,a.colorder";
         /// <param name="className"></param>
         /// <param name="tableInfo"></param>
         /// <returns></returns>
-        private string getCSharpSelectAllFunc(string className, TableInfo tableInfo)
+        private string GetCSharpSelectAllFunc(string className, TableInfo tableInfo)
         {
             //定义总的输出
             StringBuilder sb = new StringBuilder();
@@ -1164,7 +1168,7 @@ order by  a.id,a.colorder";
         #endregion private string getCSharpSelectAllFunc(string className, TableInfo tableInfo)
 
         #region private string getCSharpPrivateFuncs(string className, TableInfo tableInfo)
-        private string getCSharpPrivateFuncs(string className, TableInfo tableInfo)
+        private string GetCSharpPrivateFuncs(string className, TableInfo tableInfo)
         {
             //定义总的输出
             StringBuilder sb = new StringBuilder();
@@ -1193,7 +1197,7 @@ order by  a.id,a.colorder";
                 argListStr.Append(BSqlFunction.GetCSharpTypeString(autoIncr.FieldType) + " " + BSqlFunction.GetPropertyName(autoIncr.FieldName, true));
                 argStr.Append(BSqlFunction.GetPropertyName(autoIncr.FieldName, true));
                 argCount++;
-                sqlParamStr.AppendLine(string.Format("\t\tSqlParameter parm = new SqlParameter({0}, SqlDbType.{1});", string.Format(ConstVars.PARM_NAME, autoIncr.FieldName.ToUpper().Replace("_", "")), getSqlDbType(autoIncr)));
+                sqlParamStr.AppendLine(string.Format("\t\tSqlParameter parm = new SqlParameter({0}, SqlDbType.{1});", string.Format(ConstVars.PARM_NAME, autoIncr.FieldName.ToUpper().Replace("_", "")), GetSqlDbType(autoIncr)));
                 sqlParamValueStr.AppendLine(string.Format("\t\tparm.Value = {0};", BSqlFunction.GetPropertyName(autoIncr.FieldName, true)));
             }
             else
@@ -1210,7 +1214,7 @@ order by  a.id,a.colorder";
                         sqlParamStr.AppendLine(
                             string.Format("\t\tSqlParameter parm = new SqlParameter({0}, SqlDbType.{1});",
                                 string.Format(ConstVars.PARM_NAME, priFields[0].FieldName.ToUpper().Replace("_", "")),
-                                getSqlDbType(priFields[0])));
+                                GetSqlDbType(priFields[0])));
                         sqlParamValueStr.AppendLine(string.Format("\t\tparm.Value = {0};",
                             BSqlFunction.GetPropertyName(priFields[0].FieldName, true)));
                         argCount++;
@@ -1229,7 +1233,7 @@ order by  a.id,a.colorder";
                                 sqlParamStr.AppendLine("");
                             }
 
-                            sqlParamStr.AppendFormat("\t\t\tnew SqlParameter({0}, SqlDbType.{1})", string.Format(ConstVars.PARM_NAME, priField.FieldName.ToUpper().Replace("_", "")), getSqlDbType(priField));
+                            sqlParamStr.AppendFormat("\t\t\tnew SqlParameter({0}, SqlDbType.{1})", string.Format(ConstVars.PARM_NAME, priField.FieldName.ToUpper().Replace("_", "")), GetSqlDbType(priField));
                             sqlParamValueStr.AppendLine(string.Format("\t\tparms[{0}].Value = {1};", argCount, BSqlFunction.GetPropertyName(priField.FieldName, true)));
 
                             argListStr.Append(BSqlFunction.GetCSharpTypeString(priField.FieldType) + " " + BSqlFunction.GetPropertyName(priField.FieldName, true));
@@ -1303,7 +1307,7 @@ order by  a.id,a.colorder";
             int i = 0;
             foreach (FieldInfo fieldInfo in tableInfo.Fields)
             {
-                sb.AppendLine(string.Format("\t\t\t{0}", getCSharpSqlDataReader(fieldInfo.FieldType, i)));
+                sb.AppendLine(string.Format("\t\t\t{0}", GetCSharpSqlDataReader(fieldInfo.FieldType, i)));
                 i++;
             }
             sb.Remove(sb.Length - 3, 3);
@@ -1322,7 +1326,7 @@ order by  a.id,a.colorder";
         #endregion private string getCSharpPrivateFuncs(string className, TableInfo tableInfo)
 
         #region private static string getSqlDbType(FieldInfo fieldInfo)
-        private static string getSqlDbType(FieldInfo fieldInfo)
+        private static string GetSqlDbType(FieldInfo fieldInfo)
         {
             switch (fieldInfo.FieldType.ToLower())
             {
@@ -1346,7 +1350,7 @@ order by  a.id,a.colorder";
         #endregion private static string getSqlDbType(FieldInfo fieldInfo)
 
         #region private static string getCSharpSqlDataReader(string fieldType, int index)
-        private static string getCSharpSqlDataReader(string fieldType, int index)
+        private static string GetCSharpSqlDataReader(string fieldType, int index)
         {
             switch (fieldType.ToLower())
             {

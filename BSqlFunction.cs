@@ -12,8 +12,6 @@ namespace CodeHelper
     {
         private static BSqlFunction _instance;
 
-        private ISqlFuction _dal = null;
-
         private BSqlFunction()
         {
         }
@@ -71,9 +69,7 @@ namespace CodeHelper
                         case CodeTypes.CSharp4:
                             return GetCSharp4Model(className.Trim(), tableInfo);
                         case CodeTypes.CSharp:
-                            return GetCSharpModel(className.Trim(), tableInfo);
-                        case CodeTypes.DooPHP:
-                            return GetDooPhpModel(className.Trim(), tableInfo);
+                            return GetCSharpModel(className.Trim(), tableInfo);                        
                         case CodeTypes.Java:
                             return GetJavaModel(className.Trim(), tableInfo);
                     }
@@ -99,10 +95,7 @@ namespace CodeHelper
                     {
                         case CodeTypes.CSharp:
                         case CodeTypes.CSharp4:
-                            return getCharpDalClass(className.Trim(), tableInfo);
-                        case CodeTypes.DooPHP:
-                            return GetDooPhpModel(className.Trim(), tableInfo);
-
+                            return GetCharpDalClass(className.Trim(), tableInfo);
                         case CodeTypes.Java:
                             return GetJavaDalClass(className.Trim(), tableInfo);
                     }
@@ -553,97 +546,7 @@ namespace CodeHelper
             return stringBuilder.ToString();
         }
 
-        #endregion private static string getCSharp4Model(string className, string tableName, List<TableInfo> tables)
-
-        #region private static string GetDooPhpModel(string className, TableInfo tableInfo)
-
-        /// <summary>
-        ///     生成DooPhp的Model类
-        /// </summary>
-        /// <param name="className"></param>
-        /// <param name="tableInfo"></param>
-        /// <returns></returns>
-        private static string GetDooPhpModel(string className, TableInfo tableInfo)
-        {
-            //构造总输出
-            var stringBuilder = new StringBuilder();
-
-            //php开头
-            stringBuilder.AppendLine("<?php");
-            stringBuilder.AppendLine("Doo::loadCore('db/DooModel');");
-            //写类注释
-            stringBuilder.AppendLine("/**");
-            stringBuilder.AppendLine(" *  Class Description");
-            stringBuilder.AppendLine(" */");
-            //写类名
-            stringBuilder.Append("class " + className);
-            stringBuilder.AppendLine(" extends DooModel {");
-
-            //属性输出
-            var propertiesStr = new StringBuilder();
-            var fieldsArray = new StringBuilder();
-            var primaryKey = "";
-            //遍历表字段进行输出
-            foreach (var field in tableInfo.Fields)
-            {
-                //处理属性
-                propertiesStr.AppendLine("");
-                propertiesStr.AppendLine("\t/**");
-                propertiesStr.AppendLine("\t * " + field.Description);
-
-                if (field.FieldLength > 0)
-                    propertiesStr.AppendLine("\t * @var " + field.FieldType + ", length is " + field.FieldLength + ".");
-                else
-                    propertiesStr.AppendLine("\t * @var " + field.FieldType);
-                propertiesStr.AppendLine("\t */");
-                propertiesStr.Append("\tpublic ");
-                propertiesStr.AppendLine(" $" + field.FieldName + ";");
-                propertiesStr.AppendLine("");
-
-                //处理字段数组
-                fieldsArray.AppendFormat("'{0}',", field.FieldName);
-
-                //判断pri
-                if (field.IsPrimaryKey && string.IsNullOrEmpty(primaryKey)) primaryKey = field.FieldName;
-            }
-
-            //字段属性添加
-            stringBuilder.AppendLine(propertiesStr.ToString());
-            stringBuilder.AppendLine("");
-            //表名
-            stringBuilder.AppendLine(string.Format("\tpublic $_table = '`{0}`.`{1}`';",
-                Global.GetInstance().DB.DataBase,
-                tableInfo.TableName));
-            //主键，以第一个出现的为准
-            if (string.IsNullOrEmpty(primaryKey))
-            {
-                var autoIncr = tableInfo.Fields.Find(c => c.IsIdentity);
-                if (autoIncr != null) primaryKey = autoIncr.FieldName;
-            }
-
-            stringBuilder.AppendLine(string.Format("\tpublic $_primarykey = '{0}';", primaryKey));
-            stringBuilder.AppendLine(string.Format("\tpublic $_fields = array({0});",
-                fieldsArray.Remove(fieldsArray.Length - 1, 1)));
-
-            stringBuilder.AppendLine("");
-            //构造函数输出
-            var constructorStr = new StringBuilder();
-            constructorStr.AppendLine("\tpublic function  __construct($data=null) {");
-            constructorStr.AppendLine("\t\tparent::__construct( $data );");
-            constructorStr.AppendLine("\t\tparent::setupModel(__CLASS__);");
-            constructorStr.AppendLine("\t}");
-
-            //添加构造函数
-            stringBuilder.Append(constructorStr);
-            stringBuilder.AppendLine("");
-            stringBuilder.AppendLine("}");
-            stringBuilder.AppendLine("?>");
-
-            //输出结果
-            return stringBuilder.ToString();
-        }
-
-        #endregion private static string getDooPhpModel(string className, TableInfo tableInfo)
+        #endregion private static string getCSharp4Model(string className, string tableName, List<TableInfo> tables)        
 
         #region private string getJavaModel(string className, TableInfo tableInfo)
 
@@ -772,7 +675,7 @@ namespace CodeHelper
 
         #region private string getCharpDalClass(string className, TableInfo tableInfo)
 
-        private string getCharpDalClass(string className, TableInfo tableInfo)
+        private string GetCharpDalClass(string className, TableInfo tableInfo)
         {
             //构造总输出
             var stringBuilder = new StringBuilder();

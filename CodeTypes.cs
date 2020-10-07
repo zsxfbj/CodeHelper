@@ -13,10 +13,7 @@
         /// <summary>
         /// Java代码
         /// </summary>
-        Java = 3,
-        /// <summary>
-        /// DooPHP代码，只有Model类
-        /// </summary>
-        DooPHP = 4
+        Java = 3
+        
     }
 }
