@@ -459,6 +459,10 @@ namespace CodeHelper
             stringBuilder.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
             stringBuilder.AppendLine("");
             //写类名
+
+            stringBuilder.AppendLine("/// <summary>");
+            stringBuilder.AppendLine("/// " + tableInfo.Description);
+            stringBuilder.AppendLine("/// </summary>");
             stringBuilder.AppendLine("[Serializable]");
             stringBuilder.AppendLine(string.Format("[Table(\"{0}\")]", tableInfo.TableName));
             stringBuilder.AppendLine("public class " + className);
@@ -493,9 +497,7 @@ namespace CodeHelper
                 propertiesStr.AppendLine("\t/// " + field.Description);
                 propertiesStr.AppendLine("\t/// </summary>");
                 if (field.IsPrimaryKey) propertiesStr.AppendLine("\t[Key]");
-
                
-
                 propertiesStr.AppendFormat("\t[Column(\"{0}\")]", field.FieldName);
                 propertiesStr.AppendLine();
 
