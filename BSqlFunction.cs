@@ -163,11 +163,13 @@ namespace CodeHelper
             if (fieldType.Equals("bit", StringComparison.OrdinalIgnoreCase)) return "bool";
             if (fieldType.Equals("float", StringComparison.OrdinalIgnoreCase)) return "double";
             if (fieldType.Equals("money", StringComparison.OrdinalIgnoreCase) ||
+                fieldType.Equals("decimal", StringComparison.OrdinalIgnoreCase) ||
                 fieldType.Equals("numeric", StringComparison.OrdinalIgnoreCase))
                 return "decimal";
             if (fieldType.Equals("varchar", StringComparison.OrdinalIgnoreCase) ||
                 fieldType.Equals("nvarchar", StringComparison.OrdinalIgnoreCase) ||
                 fieldType.Equals("char", StringComparison.OrdinalIgnoreCase) ||
+                fieldType.Equals("longtext", StringComparison.OrdinalIgnoreCase) ||
                 fieldType.Equals("text", StringComparison.OrdinalIgnoreCase))
                 return "string";
             if (fieldType.Equals("datetime", StringComparison.OrdinalIgnoreCase) ||
@@ -491,13 +493,13 @@ namespace CodeHelper
                 propertiesStr.AppendLine("\t/// " + field.Description);
                 propertiesStr.AppendLine("\t/// </summary>");
 
-                if (field.IsPrimaryKey) propertiesStr.Append("\t[key]");
+                if (field.IsPrimaryKey) propertiesStr.AppendLine("\t[key]");
+                
+                propertiesStr.AppendFormat("\t[Column(\"{0}\")]", field.FieldName);
                 propertiesStr.AppendLine();
-                propertiesStr.AppendFormat("[Column(\"{0}\")]", field.FieldName);
-                propertiesStr.AppendLine();
+                if (field.IsIdentity) propertiesStr.AppendLine("\t[DatabaseGenerated(DatabaseGeneratedOption.Identity)]");     
 
                 propertiesStr.Append("\tpublic ");
-
 
                 propertiesStr.Append(GetCSharpTypeString(field.FieldType));
                 propertiesStr.AppendLine(" " + propertyName + " { get; set; }");
