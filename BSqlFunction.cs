@@ -455,8 +455,8 @@ namespace CodeHelper
             var stringBuilder = new StringBuilder();
 
             stringBuilder.AppendLine("using System;");
-            stringBuilder.AppendLine("using System.Data.Linq;");
-            stringBuilder.AppendLine("using System.Data.Linq.Mapping;");
+            stringBuilder.AppendLine("using System.ComponentModel.DataAnnotations;");
+            stringBuilder.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
             stringBuilder.AppendLine("");
             //写类名
             stringBuilder.AppendLine("[Serializable]");
@@ -492,11 +492,16 @@ namespace CodeHelper
                 propertiesStr.AppendLine("\t/// <summary>");
                 propertiesStr.AppendLine("\t/// " + field.Description);
                 propertiesStr.AppendLine("\t/// </summary>");
+                if (field.IsPrimaryKey) propertiesStr.AppendLine("\t[Key]");
 
-                if (field.IsPrimaryKey) propertiesStr.AppendLine("\t[key]");
-                
+               
+
                 propertiesStr.AppendFormat("\t[Column(\"{0}\")]", field.FieldName);
                 propertiesStr.AppendLine();
+
+                if (GetCSharpTypeString(field.FieldType).Equals("DateTime", StringComparison.OrdinalIgnoreCase)) propertiesStr.AppendLine("\t[DataType(DataType.DateTime)]");
+                if (GetCSharpTypeString(field.FieldType).Equals("decimal", StringComparison.OrdinalIgnoreCase)) propertiesStr.AppendLine("\t[DataType(DataType.Currency)]");
+
                 if (field.IsIdentity) propertiesStr.AppendLine("\t[DatabaseGenerated(DatabaseGeneratedOption.Identity)]");     
 
                 propertiesStr.Append("\tpublic ");
