@@ -21,14 +21,13 @@ namespace CodeHelper
                     rbCSharp2.Checked = true;
                     break;
                 case CodeTypes.Java:
-
                     rbJava.Checked = true;
                     break;              
             }
         }
 
         /// <summary>
-        /// ÅäÖÃÊı¾İ¿â
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -37,7 +36,7 @@ namespace CodeHelper
             DbConfig dbFrm = new DbConfig();
             if (dbFrm.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show(@"Êı¾İ¿âÉèÖÃ³É¹¦£¡", @"ÌáÊ¾", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"æ•°æ®åº“é…ç½®æˆåŠŸ", @"æç¤º", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -56,7 +55,7 @@ namespace CodeHelper
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "¾¯¸æ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ex.Message, "æ•°æ®åº“è®¿é—®å¤±è´¥", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -79,7 +78,7 @@ namespace CodeHelper
             }
             else
             {
-                MessageBox.Show(@"ÇëÑ¡ÔñÒªÉú³É´úÂëµÄÊı¾İ±í»òÕßÌîĞ´ÒªÉú³ÉµÄÀàÃû", @"ÌáĞÑ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"Modelç±»ç”ŸæˆæˆåŠŸ", @"æç¤º", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
         #endregion  private void btnCreateModel_Click(object sender, EventArgs e)
@@ -88,7 +87,7 @@ namespace CodeHelper
         {
             if (string.IsNullOrEmpty(txtClassName.Text))
             {
-                MessageBox.Show(@"±ØĞëÌîĞ´ÀàÃû", @"ÌáÊ¾", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"DALç±»ç”ŸæˆæˆåŠŸ", @"æç¤º", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             string className = txtClassName.Text.Substring(0, 1).ToUpper() + txtClassName.Text.Substring(1);
@@ -98,10 +97,9 @@ namespace CodeHelper
             txtCode.Text = BSqlFunction.GetInstance().GetDalClass(className, tableName);
         }
 
-        #region Éú³É´úÂëÀàĞÍµÄÑ¡Ôñµã»÷ÊÂ¼ş
-
+       
         /// <summary>
-        /// Ñ¡ÔñÉú³ÉC#4´úÂë
+        ///  
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -120,14 +118,14 @@ namespace CodeHelper
             Global.GetInstance().CodeType = CodeTypes.Java;
         }
 
-        #endregion Éú³É´úÂëÀàĞÍµÄÑ¡Ôñµã»÷ÊÂ¼ş
+        
 
 
         #region Private Methods
 
         #region  private void CreateTreeNode()
         /// <summary>
-        /// ´´½¨±íµ¥Ê÷
+        ///  
         /// </summary>
         private void CreateTreeNode()
         {
@@ -179,230 +177,6 @@ namespace CodeHelper
 
         #endregion Private Methods
 
-        
-        #region unused
-        private void BtnCreateJava_Click(object sender, EventArgs e)
-        {
-            //txtCode.Text = "";
-            //if(txtClassName.Text.Trim() != string.Empty)
-            //{
-            //    DBConfigInfo dbConfigInfo = DBConfigUtil.GetDBConfigInfo();
-            //    StringBuilder sb = new StringBuilder();
-
-            //    //Éú³Éjava model²¿·Ö
-            //    StringBuilder fieldString = new StringBuilder();
-            //    StringBuilder getString = new StringBuilder();
-            //    StringBuilder setString = new StringBuilder();
-            //    StringBuilder constructorString = new StringBuilder();
-            //    StringBuilder parameterString = new StringBuilder();
-            //    //java Sql²¿·Ö
-            //    string insertSql = "INSERT INTO " + dbConfigInfo.DataBase + "." + dataTables.SelectedNode.Text + " ( {0} ) VALUES ( {1} )";
-            //    string updateSql = "UPDATE " + dbConfigInfo.DataBase + "." + dataTables.SelectedNode.Text + " SET {0} WHERE {1}";
-            //    string deleteSql = "DELETE FROM " + dbConfigInfo.DataBase + "." + dataTables.SelectedNode.Text + " WHERE {0}";
-            //    string selectSql = "SELECT {0} FROM " + dbConfigInfo.DataBase + "." + dataTables.SelectedNode.Text + " WHERE {1}";
-
-            //    StringBuilder insertFields = new StringBuilder();
-            //    StringBuilder selectFields = new StringBuilder();
-            //    StringBuilder valuesString = new StringBuilder();
-            //    StringBuilder updateFields = new StringBuilder();
-            //    StringBuilder whereParams = new StringBuilder();
-            //    StringBuilder rsString = new StringBuilder();
-
-
-            //    sb.Append("public class " + txtClassName.Text.Trim() + " {" + Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-
-            //    constructorString.Append("\tpublic " + txtClassName.Text + "() {}" + Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-            //    constructorString.Append("\tpublic " + txtClassName.Text + "(@parms) { " + Environment.NewLine);
-
-
-            //    List<FieldInfo> fields = tableFields[tableName];
-            //    bool hasAutoIncrement = false;
-            //    foreach (FieldInfo info in fields)
-            //    {
-            //        selectFields.Append(info.FieldName + ", ");
-            //        if (info.Extra.Equals("auto_increment"))
-            //        {
-            //            whereParams.Append(info.FieldName + "=?");
-            //            hasAutoIncrement = true;
-            //        }
-            //        else if (hasAutoIncrement == false && info.FieldKey.Equals("PRI"))
-            //        {
-            //            whereParams.Append(info.FieldName + "=? AND ");
-            //            insertFields.Append(info.FieldName + ", ");
-            //            valuesString.Append("?,");
-            //        }
-            //        else
-            //        {
-            //            insertFields.Append(info.FieldName + ", ");
-            //            updateFields.Append(info.FieldName + "=?, ");
-            //            valuesString.Append("?,");
-            //        }
-
-            //        string firstAlphabet = info.FieldName.Substring(0, 1);
-
-            //        if (info.Comment.Length > 0)
-            //        {
-            //            fieldString.Append("\t/**" + Environment.NewLine);
-            //            fieldString.Append("\t*" + info.Comment + Environment.NewLine);
-            //            fieldString.Append("\t*/" + Environment.NewLine);
-            //        }
-            //        fieldString.Append("\tprivate ");
-            //        getString.Append("\tpublic ");
-            //        setString.Append("\tpublic void set" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + " (");
-
-            //        if (info.FieldTye.IndexOf("bigint", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("long ");
-            //            getString.Append("long get" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "(){" + Environment.NewLine);
-
-            //            setString.Append(" long " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + " ){" + Environment.NewLine);
-
-            //            parameterString.Append(" long " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + ",");
-
-            //            rsString.Append("rs.getLong(\"" + info.FieldName + "\"),");
-            //        }
-            //        else if (info.FieldTye.IndexOf("tinyint", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("byte ");
-            //            getString.Append("byte get" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "(){" + Environment.NewLine);
-            //            setString.Append(" byte " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + " ){" + Environment.NewLine);
-
-            //            parameterString.Append(" byte " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + ",");
-
-            //            rsString.Append("rs.getByte(\"" + info.FieldName + "\"),");
-            //        }
-            //        else if (info.FieldTye.IndexOf("int", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("int ");
-            //            getString.Append("int get" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "(){" + Environment.NewLine);
-
-            //            setString.Append(" int " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + " ){" + Environment.NewLine);
-
-            //            parameterString.Append(" int " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + ",");
-            //            rsString.Append("rs.getInt(\"" + info.FieldName + "\"),");
-            //        }
-            //        else if (info.FieldTye.IndexOf("char", StringComparison.OrdinalIgnoreCase) != -1 || info.FieldTye.IndexOf("blob", StringComparison.OrdinalIgnoreCase) != -1 || info.FieldTye.IndexOf("text", StringComparison.OrdinalIgnoreCase) != -1 )
-            //        {
-            //            fieldString.Append("String ");
-            //            getString.Append("String get" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "(){" + Environment.NewLine);
-
-            //            setString.Append(" String " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + " ){" + Environment.NewLine);
-
-            //            parameterString.Append(" String " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + ",");
-
-            //            rsString.Append("rs.getString(\"" + info.FieldName + "\"),");
-            //        }
-            //        else if (info.FieldTye.IndexOf("float", StringComparison.OrdinalIgnoreCase) != -1 )
-            //        {
-            //            fieldString.Append("double ");
-            //            getString.Append("double get" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "(){" + Environment.NewLine);
-
-            //            setString.Append(" double " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + " ){" + Environment.NewLine);
-
-            //            parameterString.Append(" double " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + ",");
-
-            //            rsString.Append("rs.getDouble(\"" + info.FieldName + "\"),");
-            //        }
-
-            //        else if (info.FieldTye.IndexOf("decimal", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("java.math.BigDecimal ");
-            //            getString.Append("java.math.BigDecimal get" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "(){" + Environment.NewLine);
-
-            //            setString.Append(" java.math.BigDecimal " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + " ){" + Environment.NewLine);
-
-            //            parameterString.Append(" java.math.BigDecimal " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + ",");
-
-            //            rsString.Append("rs.getBigDecimal(\"" + info.FieldName + "\"),");
-            //        }
-            //        else if (info.FieldTye.IndexOf("datetime", StringComparison.OrdinalIgnoreCase) != -1)
-            //        {
-            //            fieldString.Append("Date ");
-
-            //            getString.Append("Date get" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + "(){" + Environment.NewLine);
-
-            //            setString.Append(" Date " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + " ){" + Environment.NewLine);
-
-            //            parameterString.Append(" Date " + firstAlphabet.ToLower() + info.FieldName.Substring(1) + ",");
-
-            //            rsString.Append("rs.getTimestamp(\"" + info.FieldName + "\"),");
-            //        }
-            //        rsString.Append(Environment.NewLine);
-
-            //        fieldString.Append(firstAlphabet.ToUpper() + info.FieldName.Substring(1) + ";" + Environment.NewLine);
-
-            //        getString.Append(Environment.NewLine);
-            //        getString.Append("\t\treturn " + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + ";" + Environment.NewLine);
-            //        getString.Append("\t}" + Environment.NewLine);
-
-            //        setString.Append("\t\t" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + " = " + firstAlphabet.ToLower() +
-            //                         info.FieldName.Substring(1) + ";" + Environment.NewLine);
-            //        setString.Append("\t}" + Environment.NewLine);
-
-            //        constructorString.Append("\t\t" + firstAlphabet.ToUpper() + info.FieldName.Substring(1) + " = " + firstAlphabet.ToLower() +
-            //                         info.FieldName.Substring(1) + ";" + Environment.NewLine);
-
-            //    }
-
-            //    constructorString.Append("\t}" + Environment.NewLine);
-
-            //    sb.Append(fieldString.ToString());
-            //    sb.Append(Environment.NewLine);
-            //    string parmString = parameterString.Remove(parameterString.Length - 1, 1).ToString();
-            //    sb.Append(constructorString);
-            //    sb.Replace("@parms", parmString);
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(getString.ToString());
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(setString.ToString());
-
-
-            //    sb.Append("}");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-
-
-            //    //Éú³Éjava DAL²¿·Ö
-
-            //    sb.Append("//DAL²¿·Ö");
-
-            //    sb.Append(Environment.NewLine);
-
-
-            //    sb.Append("\tprivate final static String SQL_INSERT_" + dataTables.SelectedNode.Text.ToUpper() + " = \"" + string.Format(insertSql, insertFields.Remove(insertFields.Length - 2, 2), valuesString.Remove(valuesString.Length - 1, 1)) + "\";");
-            //    sb.Append(Environment.NewLine);
-            //    /*
-            //    if(whereParams.Length > 0)
-            //    {
-            //        whereParams.Remove(whereParams.Length - 4, 4);
-            //    }
-            //    */
-            //    sb.Append("\tprivate final static String SQL_UPDATE_" + dataTables.SelectedNode.Text.ToUpper() + " = \"" + string.Format(updateSql, updateFields.Remove(updateFields.Length - 2, 2), whereParams) + "\";");
-            //    sb.Append(Environment.NewLine);
-
-            //    sb.Append("\tprivate final static String SQL_DELETE_" + dataTables.SelectedNode.Text.ToUpper() + " = \"" + string.Format(deleteSql, whereParams) + "\";");
-            //    sb.Append(Environment.NewLine);
-
-            //    sb.Append("\tprivate final static String SQL_SELECT_" + dataTables.SelectedNode.Text.ToUpper() + " = \"" + string.Format(selectSql, selectFields.Remove(selectFields.Length - 2, 2), whereParams) + "\";");
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-
-            //    sb.Append(rsString.ToString());
-            //    sb.Append(Environment.NewLine);
-            //    sb.Append(Environment.NewLine);
-
-            //    txtCode.Text = sb.ToString();
-
-            //}
-        }       
-
-        #endregion unused
-
-   
-        
-
+      
     }
 }
