@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="8.0.4" />
+    <ProjectReference Include="..\IDAL\CodeHelper.IDAL.csproj" />
   </ItemGroup>
 
 </Project>

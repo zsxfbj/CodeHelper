@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="8.0.4" />
+    <ProjectReference Include="..\Model\CodeHelper.Model.csproj" />
+    <ProjectReference Include="..\Utility\CodeHelper.Utility.csproj" />
   </ItemGroup>
 
 </Project>

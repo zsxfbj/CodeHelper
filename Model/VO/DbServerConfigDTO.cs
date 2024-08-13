@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace CodeHelper.Model
+namespace CodeHelper.Model.VO
 {
     /// <summary>
-    /// 数据库视图
+    /// 数据库服务器配置信息
     /// </summary>
-    [Serializable]
-    public class DatabaseVO
+    public class ServerConfigVO
     {
         /// <summary>
-        /// 访问地址
+        /// 配置名称
         /// </summary>
-        public string Address {  get; set; } = string.Empty;
+        public string ConfigName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 服务器Ip或者信息
+        /// </summary>
+        public string Server { get; set; } = string.Empty;
 
         /// <summary>
         /// 访问的用户账号
@@ -30,18 +33,15 @@ namespace CodeHelper.Model
         public string Port { get; set; } = string.Empty;
 
         /// <summary>
-        /// 数据库名称
+        /// 可不配置
         /// </summary>
-        public string DbName {  get; set; } = string.Empty; 
+        public string Database { get; set; } = string.Empty;
 
         /// <summary>
-        /// 配置的名称
+        /// 创建日期
         /// </summary>
-        public string ConfigName {  get; set; } = string.Empty;
+        public DateTime CreateDate {  get; set; } =  DateTime.Now;
 
-        /// <summary>
-        /// 数据库里的数据表
-        /// </summary>
-        public List<TableVO> Tables { get; set; } = new List<TableVO>();
+
     }
 }

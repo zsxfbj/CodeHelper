@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using CodeHelper.Model.Serialize;
 
-namespace CodeHelper.Model
+namespace CodeHelper.Model.VO
 {
     /// <summary>
     /// 表结构视图
@@ -18,6 +20,12 @@ namespace CodeHelper.Model
         /// 说明
         /// </summary>
         public string Description { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 创建日期
+        /// </summary>
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime CreateTime { get; set; } = DateTime.Now;
 
         /// <summary>
         /// 字段类型

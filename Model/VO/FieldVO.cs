@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodeHelper.Model
+namespace CodeHelper.Model.VO
 {
     /// <summary>
     /// 字段属性描述视图
