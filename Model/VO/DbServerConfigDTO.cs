@@ -1,4 +1,6 @@
 ﻿using System;
+using CodeHelper.Model.Serialize;
+using System.Text.Json.Serialization;
 
 namespace CodeHelper.Model.VO
 {
@@ -40,8 +42,13 @@ namespace CodeHelper.Model.VO
         /// <summary>
         /// 创建日期
         /// </summary>
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
         public DateTime CreateDate {  get; set; } =  DateTime.Now;
 
-
+        /// <summary>
+        /// 更新日期
+        /// </summary>
+        [JsonConverter(typeof(DefaultDateTimeConverter))]
+        public DateTime UpdateDate { get; set; } = DateTime.Now;
     }
 }

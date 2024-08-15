@@ -24,6 +24,12 @@ namespace CodeHelper.Model.VO
         /// 字段长度
         /// </summary>
         public int FieldLength { get; set; } = 0;
+
+        /// <summary>
+        /// 默认值
+        /// </summary>
+        public string DefaultValue { get; set; } = string.Empty;
+
         /// <summary>
         /// 字段说明
         /// </summary>
