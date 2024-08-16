@@ -1,18 +1,24 @@
 ﻿using System;
 using CodeHelper.Model.Serialize;
 using System.Text.Json.Serialization;
+using CodeHelper.Enum;
 
-namespace CodeHelper.Model.VO
+namespace CodeHelper.Model.DTO
 {
     /// <summary>
     /// 数据库服务器配置信息
     /// </summary>
-    public class ServerConfigVO
+    public class ServerConfigDTO
     {
         /// <summary>
         /// 配置名称
         /// </summary>
         public string ConfigName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 数据库类型
+        /// </summary>
+        public DbTypes DbType { get; set; }
 
         /// <summary>
         /// 服务器Ip或者信息
@@ -43,7 +49,7 @@ namespace CodeHelper.Model.VO
         /// 创建日期
         /// </summary>
         [JsonConverter(typeof(DefaultDateTimeConverter))]
-        public DateTime CreateDate {  get; set; } =  DateTime.Now;
+        public DateTime CreateDate { get; set; } = DateTime.Now;
 
         /// <summary>
         /// 更新日期

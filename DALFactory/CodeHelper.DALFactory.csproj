@@ -8,7 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Enum\CodeHelper.Enum.csproj" />
     <ProjectReference Include="..\IDAL\CodeHelper.IDAL.csproj" />
-    <ProjectReference Include="..\SQLServer\CodeHelper.SQLServer.csproj" />
+    <ProjectReference Include="..\SQLServer\CodeHelper.SQLServerDAL.csproj" />
     <ProjectReference Include="..\Utility\CodeHelper.Utility.csproj" />
   </ItemGroup>
 

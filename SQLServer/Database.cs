@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Xml;
 
-namespace CodeHelper.SQLServer
+namespace CodeHelper.SQLServerDAL
 {
     /// <summary>
     /// 数据访问层，提供处理Sql Server数据库的各种方法
@@ -177,11 +177,10 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">An array of SqlParameters to be associated with the command or 'null' if no parameters are required</param>
         /// <param name="mustCloseConnection"><c>true</c> if the connection was opened by the method, otherwose is false.</param>
-        private static void PrepareCommand(SqlCommand command, SqlConnection connection, SqlTransaction transaction,
-                                           CommandType commandType, string commandText, SqlParameter[] commandParameters,
-                                           out bool mustCloseConnection)
+        private static void PrepareCommand(SqlCommand? command, SqlConnection? connection, SqlTransaction? transaction, CommandType commandType, string commandText, SqlParameter[]? commandParameters, out bool mustCloseConnection)
         {
             if (command == null) throw new ArgumentNullException("command");
+            if (connection == null) throw new ArgumentNullException("connection");
             if (string.IsNullOrEmpty(commandText)) throw new ArgumentNullException("commandText");
 
             // If the provided connection is not open, we will open it
@@ -240,7 +239,7 @@ namespace CodeHelper.SQLServer
         public static int ExecuteNonQuery(string connectionString, CommandType commandType, string commandText)
         {
             // Pass through the call providing null for the set of SqlParameters
-            return ExecuteNonQuery(connectionString, commandType, commandText, (SqlParameter[])null);
+            return ExecuteNonQuery(connectionString, commandType, commandText, null);
         }
 
         /// <summary>
@@ -256,8 +255,7 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">An array of SqlParamters used to execute the command</param>
         /// <returns>An int representing the number of rows affected by the command</returns>
-        public static int ExecuteNonQuery(string connectionString, CommandType commandType, string commandText,
-                                          params SqlParameter[] commandParameters)
+        public static int ExecuteNonQuery(string connectionString, CommandType commandType, string commandText, params SqlParameter[]? commandParameters)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentNullException("connectionString");
@@ -287,7 +285,7 @@ namespace CodeHelper.SQLServer
         /// <param name="spName">The name of the stored prcedure</param>
         /// <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
         /// <returns>An int representing the number of rows affected by the command</returns>
-        public static int ExecuteNonQuery(string connectionString, string spName, params object[] parameterValues)
+        public static int ExecuteNonQuery(string connectionString, string spName, params object[]? parameterValues)
         {
             if (connectionString == null || connectionString.Length == 0)
                 throw new ArgumentNullException("connectionString");
@@ -326,7 +324,7 @@ namespace CodeHelper.SQLServer
         public static int ExecuteNonQuery(SqlConnection connection, CommandType commandType, string commandText)
         {
             // Pass through the call providing null for the set of SqlParameters
-            return ExecuteNonQuery(connection, commandType, commandText, (SqlParameter[])null);
+            return ExecuteNonQuery(connection, commandType, commandText, null);
         }
 
         /// <summary>
@@ -342,7 +340,7 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">An array of SqlParamters used to execute the command</param>
         /// <returns>An int representing the number of rows affected by the command</returns>
-        public static int ExecuteNonQuery(SqlConnection connection, CommandType commandType, string commandText, params SqlParameter[] commandParameters)
+        public static int ExecuteNonQuery(SqlConnection connection, CommandType commandType, string commandText, params SqlParameter[]? commandParameters)
         {
             if (connection == null) throw new ArgumentNullException("connection");
 
@@ -412,10 +410,10 @@ namespace CodeHelper.SQLServer
         /// <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <returns>An int representing the number of rows affected by the command</returns>
-        public static int ExecuteNonQuery(SqlTransaction transaction, CommandType commandType, string commandText)
+        public static int ExecuteNonQuery(SqlTransaction? transaction, CommandType commandType, string commandText)
         {
             // Pass through the call providing null for the set of SqlParameters
-            return ExecuteNonQuery(transaction, commandType, commandText, (SqlParameter[])null);
+            return ExecuteNonQuery(transaction, commandType, commandText, null);
         }
 
         /// <summary>
@@ -431,8 +429,8 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">An array of SqlParamters used to execute the command</param>
         /// <returns>An int representing the number of rows affected by the command</returns>
-        public static int ExecuteNonQuery(SqlTransaction transaction, CommandType commandType, string commandText,
-                                          params SqlParameter[] commandParameters)
+        public static int ExecuteNonQuery(SqlTransaction? transaction, CommandType commandType, string commandText,
+                                          params SqlParameter[]? commandParameters)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             if (transaction != null && transaction.Connection == null)
@@ -442,8 +440,7 @@ namespace CodeHelper.SQLServer
             // Create a command and prepare it for execution
             SqlCommand cmd = new SqlCommand();
             bool mustCloseConnection = false;
-            PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters,
-                           out mustCloseConnection);
+            PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Finally, execute the command
             int retval = cmd.ExecuteNonQuery();
@@ -468,12 +465,11 @@ namespace CodeHelper.SQLServer
         /// <param name="spName">The name of the stored procedure</param>
         /// <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
         /// <returns>An int representing the number of rows affected by the command</returns>
-        public static int ExecuteNonQuery(SqlTransaction transaction, string spName, params object[] parameterValues)
+        public static int ExecuteNonQuery(SqlTransaction? transaction, string spName, params object[]? parameterValues)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             if (transaction != null && transaction.Connection == null)
-                throw new ArgumentException(
-                    "The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
+                throw new ArgumentException("The transaction was rollbacked or commited, please provide an open transaction.", "transaction");
             if (spName == null || spName.Length == 0) throw new ArgumentNullException("spName");
 
             // If we receive parameter values, we need to figure out where they go
@@ -514,7 +510,7 @@ namespace CodeHelper.SQLServer
         public static DataSet ExecuteDataset(string connectionString, CommandType commandType, string commandText)
         {
             // Pass through the call providing null for the set of SqlParameters
-            return ExecuteDataset(connectionString, commandType, commandText, (SqlParameter[])null);
+            return ExecuteDataset(connectionString, commandType, commandText, null);
         }
 
         /// <summary>
@@ -600,7 +596,7 @@ namespace CodeHelper.SQLServer
         public static DataSet ExecuteDataset(SqlConnection connection, CommandType commandType, string commandText)
         {
             // Pass through the call providing null for the set of SqlParameters
-            return ExecuteDataset(connection, commandType, commandText, (SqlParameter[])null);
+            return ExecuteDataset(connection, commandType, commandText, null);
         }
 
         /// <summary>
@@ -616,16 +612,14 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">An array of SqlParamters used to execute the command</param>
         /// <returns>A dataset containing the resultset generated by the command</returns>
-        public static DataSet ExecuteDataset(SqlConnection connection, CommandType commandType, string commandText,
-                                             params SqlParameter[] commandParameters)
+        public static DataSet ExecuteDataset(SqlConnection connection, CommandType commandType, string commandText, params SqlParameter[]? commandParameters)
         {
             if (connection == null) throw new ArgumentNullException("connection");
 
             // Create a command and prepare it for execution
             SqlCommand cmd = new SqlCommand();
             bool mustCloseConnection = false;
-            PrepareCommand(cmd, connection, null, commandType, commandText, commandParameters,
-                           out mustCloseConnection);
+            PrepareCommand(cmd, connection, null, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Create the DataAdapter & DataSet
             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -699,7 +693,7 @@ namespace CodeHelper.SQLServer
         public static DataSet ExecuteDataset(SqlTransaction transaction, CommandType commandType, string commandText)
         {
             // Pass through the call providing null for the set of SqlParameters
-            return ExecuteDataset(transaction, commandType, commandText, (SqlParameter[])null);
+            return ExecuteDataset(transaction, commandType, commandText, null);
         }
 
         /// <summary>
@@ -715,8 +709,7 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">An array of SqlParamters used to execute the command</param>
         /// <returns>A dataset containing the resultset generated by the command</returns>
-        public static DataSet ExecuteDataset(SqlTransaction transaction, CommandType commandType, string commandText,
-                                             params SqlParameter[] commandParameters)
+        public static DataSet ExecuteDataset(SqlTransaction transaction, CommandType commandType, string commandText, params SqlParameter[]? commandParameters)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             if (transaction != null && transaction.Connection == null)
@@ -726,8 +719,7 @@ namespace CodeHelper.SQLServer
             // Create a command and prepare it for execution
             SqlCommand cmd = new SqlCommand();
             bool mustCloseConnection = false;
-            PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters,
-                           out mustCloseConnection);
+            PrepareCommand(cmd, transaction.Connection, transaction, commandType, commandText, commandParameters, out mustCloseConnection);
 
             // Create the DataAdapter & DataSet
             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
@@ -1200,7 +1192,7 @@ namespace CodeHelper.SQLServer
         public static object ExecuteScalar(string connectionString, CommandType commandType, string commandText)
         {
             // Pass through the call providing null for the set of SqlParameters
-            return ExecuteScalar(connectionString, commandType, commandText, (SqlParameter[])null);
+            return ExecuteScalar(connectionString, commandType, commandText, null);
         }
 
         /// <summary>
@@ -1216,11 +1208,9 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">An array of SqlParamters used to execute the command</param>
         /// <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
-        public static object ExecuteScalar(string connectionString, CommandType commandType, string commandText,
-                                           params SqlParameter[] commandParameters)
+        public static object ExecuteScalar(string connectionString, CommandType commandType, string commandText, params SqlParameter[]? commandParameters)
         {
-            if (connectionString == null || connectionString.Length == 0)
-                throw new ArgumentNullException("connectionString");
+            if (connectionString == null || connectionString.Length == 0) throw new ArgumentNullException("connectionString");
             // Create & open a SqlConnection, and dispose of it after we are done
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -1301,8 +1291,7 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">An array of SqlParamters used to execute the command</param>
         /// <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
-        public static object ExecuteScalar(SqlConnection connection, CommandType commandType, string commandText,
-                                           params SqlParameter[] commandParameters)
+        public static object ExecuteScalar(SqlConnection connection, CommandType commandType, string commandText, params SqlParameter[]? commandParameters)
         {
             if (connection == null) throw new ArgumentNullException("connection");
 
@@ -1378,7 +1367,7 @@ namespace CodeHelper.SQLServer
         public static object ExecuteScalar(SqlTransaction transaction, CommandType commandType, string commandText)
         {
             // Pass through the call providing null for the set of SqlParameters
-            return ExecuteScalar(transaction, commandType, commandText, (SqlParameter[])null);
+            return ExecuteScalar(transaction, commandType, commandText, null);
         }
 
         /// <summary>
@@ -1394,8 +1383,7 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <param name="commandParameters">An array of SqlParamters used to execute the command</param>
         /// <returns>An object containing the value in the 1x1 resultset generated by the command</returns>
-        public static object ExecuteScalar(SqlTransaction transaction, CommandType commandType, string commandText,
-                                           params SqlParameter[] commandParameters)
+        public static object ExecuteScalar(SqlTransaction transaction, CommandType commandType, string commandText, params SqlParameter[]? commandParameters)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             if (transaction != null && transaction.Connection == null)
@@ -1569,10 +1557,10 @@ namespace CodeHelper.SQLServer
         /// <param name="commandType">The CommandType (stored procedure, text, etc.)</param>
         /// <param name="commandText">The stored procedure name or T-SQL command using "FOR XML AUTO"</param>
         /// <returns>An XmlReader containing the resultset generated by the command</returns>
-        public static XmlReader ExecuteXmlReader(SqlTransaction transaction, CommandType commandType, string commandText)
+        public static XmlReader ExecuteXmlReader(SqlTransaction? transaction, CommandType commandType, string commandText)
         {
             // Pass through the call providing null for the set of SqlParameters
-            return ExecuteXmlReader(transaction, commandType, commandText, (SqlParameter[])null);
+            return ExecuteXmlReader(transaction, commandType, commandText, null);
         }
 
         /// <summary>
@@ -1588,8 +1576,7 @@ namespace CodeHelper.SQLServer
         /// <param name="commandText">The stored procedure name or T-SQL command using "FOR XML AUTO"</param>
         /// <param name="commandParameters">An array of SqlParamters used to execute the command</param>
         /// <returns>An XmlReader containing the resultset generated by the command</returns>
-        public static XmlReader ExecuteXmlReader(SqlTransaction transaction, CommandType commandType, string commandText,
-                                                 params SqlParameter[] commandParameters)
+        public static XmlReader ExecuteXmlReader(SqlTransaction? transaction, CommandType commandType, string commandText, params SqlParameter[]? commandParameters)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             if (transaction != null && transaction.Connection == null)
@@ -1625,8 +1612,7 @@ namespace CodeHelper.SQLServer
         /// <param name="spName">The name of the stored procedure</param>
         /// <param name="parameterValues">An array of objects to be assigned as the input values of the stored procedure</param>
         /// <returns>A dataset containing the resultset generated by the command</returns>
-        public static XmlReader ExecuteXmlReader(SqlTransaction transaction, string spName,
-                                                 params object[] parameterValues)
+        public static XmlReader ExecuteXmlReader(SqlTransaction? transaction, string spName, params object[] parameterValues)
         {
             if (transaction == null) throw new ArgumentNullException("transaction");
             if (transaction != null && transaction.Connection == null)
@@ -2559,7 +2545,7 @@ namespace CodeHelper.SQLServer
         /// <returns></returns>
         public static int RunProc(string connectionString, string procName)
         {
-            return ExecuteNonQuery(connectionString, CommandType.StoredProcedure, procName, (SqlParameter[])null);
+            return ExecuteNonQuery(connectionString, CommandType.StoredProcedure, procName, null);
         }
 
         /// <summary>
@@ -2836,7 +2822,7 @@ namespace CodeHelper.SQLServer
         /// <param name="connectionString">A valid connection string for a SqlConnection</param>
         /// <param name="commandText">The stored procedure name or T-SQL command</param>
         /// <returns>An array of SqlParamters</returns>
-        public static SqlParameter[] GetCachedParameterSet(string connectionString, string commandText)
+        public static SqlParameter[]? GetCachedParameterSet(string connectionString, string commandText)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentNullException("connectionString");
@@ -2844,7 +2830,7 @@ namespace CodeHelper.SQLServer
 
             string hashKey = connectionString + ":" + commandText;
 
-            SqlParameter[] cachedParameters = paramCache[hashKey] as SqlParameter[];
+            SqlParameter[]? cachedParameters = paramCache[hashKey] as SqlParameter[];
             if (cachedParameters == null)
             {
                 return null;
@@ -2860,7 +2846,7 @@ namespace CodeHelper.SQLServer
         /// <param name="spName"></param>
         /// <param name="parms"></param>
         /// <returns></returns>
-        public static bool GetCachedParameterSet(string connectionString, string spName, out SqlParameter[] parms)
+        public static bool GetCachedParameterSet(string connectionString, string spName, out SqlParameter[]? parms)
         {
             bool hasCached = false;
             if (string.IsNullOrEmpty(connectionString))
@@ -2868,7 +2854,7 @@ namespace CodeHelper.SQLServer
             if (string.IsNullOrEmpty(spName)) throw new ArgumentNullException("spName");
             string hashKey = connectionString + ":" + spName;
 
-            SqlParameter[] cachedParameters = paramCache[hashKey] as SqlParameter[];
+            SqlParameter[]? cachedParameters = paramCache[hashKey] as SqlParameter[];
 
             if (cachedParameters == null)
             {
@@ -2890,7 +2876,7 @@ namespace CodeHelper.SQLServer
         /// <param name="spName"></param>
         /// <param name="parm"></param>
         /// <returns></returns>
-        public static bool GetCachedParameterSet(string connectionString, string spName, out SqlParameter parm)
+        public static bool GetCachedParameterSet(string connectionString, string spName, out SqlParameter? parm)
         {
             bool hasCached = false;
             if (string.IsNullOrEmpty(connectionString))
@@ -2898,7 +2884,7 @@ namespace CodeHelper.SQLServer
             if (string.IsNullOrEmpty(spName)) throw new ArgumentNullException("spName");
             string hashKey = connectionString + ":" + spName;
 
-            SqlParameter cachedParameter = paramCache[hashKey] as SqlParameter;
+            SqlParameter? cachedParameter = paramCache[hashKey] as SqlParameter;
 
             if (cachedParameter == null)
             {
@@ -2966,6 +2952,7 @@ namespace CodeHelper.SQLServer
         /// <returns>An array of SqlParameters</returns>
         internal static SqlParameter[] GetSpParameterSet(SqlConnection connection, string spName)
         {
+            if (connection == null) throw new ArgumentNullException("connection");
             return GetSpParameterSet(connection, spName, false);
         }
 
@@ -2979,8 +2966,7 @@ namespace CodeHelper.SQLServer
         /// <param name="spName">The name of the stored procedure</param>
         /// <param name="includeReturnValueParameter">A bool value indicating whether the return value parameter should be included in the results</param>
         /// <returns>An array of SqlParameters</returns>
-        internal static SqlParameter[] GetSpParameterSet(SqlConnection connection, string spName,
-                                                         bool includeReturnValueParameter)
+        internal static SqlParameter[] GetSpParameterSet(SqlConnection? connection, string spName, bool includeReturnValueParameter)
         {
             if (connection == null) throw new ArgumentNullException("connection");
             using (SqlConnection clonedConnection = (SqlConnection)((ICloneable)connection).Clone())
@@ -2996,8 +2982,7 @@ namespace CodeHelper.SQLServer
         /// <param name="spName">The name of the stored procedure</param>
         /// <param name="includeReturnValueParameter">A bool value indicating whether the return value parameter should be included in the results</param>
         /// <returns>An array of SqlParameters</returns>
-        private static SqlParameter[] GetSpParameterSetInternal(SqlConnection connection, string spName,
-                                                                bool includeReturnValueParameter)
+        private static SqlParameter[] GetSpParameterSetInternal(SqlConnection? connection, string spName, bool includeReturnValueParameter)
         {
             if (connection == null)
                 throw new ArgumentNullException("connection");
@@ -3007,9 +2992,7 @@ namespace CodeHelper.SQLServer
             string hashKey = connection.ConnectionString + ":" + spName +
                              (includeReturnValueParameter ? ":include ReturnValue Parameter" : "");
 
-            SqlParameter[] cachedParameters;
-
-            cachedParameters = paramCache[hashKey] as SqlParameter[];
+            SqlParameter[]? cachedParameters = paramCache[hashKey] as SqlParameter[];
             if (cachedParameters == null)
             {
                 SqlParameter[] spParameters = DiscoverSpParameterSet(connection, spName, includeReturnValueParameter);

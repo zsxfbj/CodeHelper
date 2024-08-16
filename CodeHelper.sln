@@ -11,15 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.IBLL", "IBLL\Cod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.Enum", "Enum\CodeHelper.Enum.csproj", "{5E049611-7EDE-43E5-AF81-337D3C3675B1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.BLL", "BLL\CodeHelper.BLL.csproj", "{0A340212-A693-42C9-98AA-AA3B0F8A11B1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.IDAL", "IDAL\CodeHelper.IDAL.csproj", "{8283F8D1-4D3B-4123-AC2A-76868EFBC236}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.SQLServer", "SQLServer\CodeHelper.SQLServer.csproj", "{D4B3E295-4F93-48A5-B8CC-EE4FFA118A8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.SQLServerDAL", "SQLServer\CodeHelper.SQLServerDAL.csproj", "{D4B3E295-4F93-48A5-B8CC-EE4FFA118A8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeHelper.DALFactory", "DALFactory\CodeHelper.DALFactory.csproj", "{72783BB3-88D5-4CDF-BA5E-3CB2A7D09CAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.DALFactory", "DALFactory\CodeHelper.DALFactory.csproj", "{72783BB3-88D5-4CDF-BA5E-3CB2A7D09CAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeHelper.BLLFactory", "BLLFactory\CodeHelper.BLLFactory.csproj", "{E1E75937-7F82-4F5F-8669-D1EFFA3F3553}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.BLLFactory", "BLLFactory\CodeHelper.BLLFactory.csproj", "{E1E75937-7F82-4F5F-8669-D1EFFA3F3553}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +41,6 @@ Global
 		{5E049611-7EDE-43E5-AF81-337D3C3675B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E049611-7EDE-43E5-AF81-337D3C3675B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E049611-7EDE-43E5-AF81-337D3C3675B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A340212-A693-42C9-98AA-AA3B0F8A11B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A340212-A693-42C9-98AA-AA3B0F8A11B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A340212-A693-42C9-98AA-AA3B0F8A11B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A340212-A693-42C9-98AA-AA3B0F8A11B1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8283F8D1-4D3B-4123-AC2A-76868EFBC236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8283F8D1-4D3B-4123-AC2A-76868EFBC236}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8283F8D1-4D3B-4123-AC2A-76868EFBC236}.Release|Any CPU.ActiveCfg = Release|Any CPU

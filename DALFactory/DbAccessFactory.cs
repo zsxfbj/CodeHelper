@@ -16,7 +16,7 @@ namespace CodeHelper.DALFactory
         /// <returns></returns>
         public static IDbAccess Create(DbTypes dbType = DbTypes.SQLServer)
         {
-            string path = "CodeHelper." + dbType.ToString();
+            string path = "CodeHelper." + dbType.ToString() + "DAL";
             string className = path + ".DbAccess";
             return MemcacheClient.CreateObject<IDbAccess>(path, className);
         }

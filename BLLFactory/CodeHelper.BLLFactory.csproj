@@ -5,4 +5,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Enum\CodeHelper.Enum.csproj" />
+    <ProjectReference Include="..\IBLL\CodeHelper.IBLL.csproj" />
+  </ItemGroup>
+
 </Project>

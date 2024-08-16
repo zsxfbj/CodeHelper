@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 using CodeHelper.IDAL;
+using CodeHelper.Model.DTO;
 using CodeHelper.Model.VO;
 
-namespace CodeHelper.SQLServer
+namespace CodeHelper.SQLServerDAL
 {
     /// <summary>
     /// 
@@ -48,7 +49,7 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
         /// </summary>
         /// <param name="serverConfig"></param>
         /// <returns></returns>
-        private static string GetConnString(ServerConfigVO serverConfig)
+        private static string GetConnString(ServerConfigDTO serverConfig)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("Server=");
@@ -76,7 +77,7 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
         /// </summary>
         /// <param name="serverConfig"></param>
         /// <returns></returns>
-        public List<DatabaseVO> GetDatabases(ServerConfigVO serverConfig)
+        public List<DatabaseVO> GetDatabases(ServerConfigDTO serverConfig)
         {
             List<DatabaseVO> databases = new List<DatabaseVO> ();
             using(SqlDataReader rdr = Database.ExecuteReader(GetConnString(serverConfig), System.Data.CommandType.Text, SQL_SELECT_ALL_DATABASES))
@@ -105,7 +106,7 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
         /// <param name="db"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public List<FieldVO> GetFields(string tableName, ServerConfigVO serverConfig, string db)
+        public List<FieldVO> GetFields(string tableName, ServerConfigDTO serverConfig, string db)
         {
             List<FieldVO> fields = new List<FieldVO>();
             serverConfig.Database = db;
@@ -139,7 +140,7 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
         /// <param name="serverConfig"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public List<TableVO> GetTables(ServerConfigVO serverConfig, string db)
+        public List<TableVO> GetTables(ServerConfigDTO serverConfig, string db)
         {
             List<TableVO> tables = new List<TableVO>();
             serverConfig.Database = db;
