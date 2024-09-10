@@ -4,7 +4,9 @@ using System.Data.SqlClient;
 using System.Text;
 using CodeHelper.IDAL;
 using CodeHelper.Model.DTO;
+using CodeHelper.Model.Exception;
 using CodeHelper.Model.VO;
+using CodeHelper.Utility;
 
 namespace CodeHelper.SQLServerDAL
 {
@@ -77,10 +79,33 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
         /// </summary>
         /// <param name="serverConfig"></param>
         /// <returns></returns>
+        /// <exception cref="ServiceException"></exception>
+        private static SqlConnection GetConnection(ServerConfigDTO serverConfig)
+        {
+            SqlConnection conn = new SqlConnection(GetConnString(serverConfig));
+            try
+            {
+                conn.Open();
+                return conn;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error("SQLServerDAL.DbAccess.GetConnection:" + ex.Message);
+                throw new ServiceException { ErrorCode = Enum.ExceptionTypes.DatabaseAccessError, ErrorMessage = "数据库连接异常，原因：" + ex.Message };
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="serverConfig"></param>
+        /// <returns></returns>
         public List<DatabaseVO> GetDatabases(ServerConfigDTO serverConfig)
         {
+            SqlConnection conn = GetConnection(serverConfig);   
+
             List<DatabaseVO> databases = new List<DatabaseVO> ();
-            using(SqlDataReader rdr = Database.ExecuteReader(GetConnString(serverConfig), System.Data.CommandType.Text, SQL_SELECT_ALL_DATABASES))
+            using(SqlDataReader rdr = Database.ExecuteReader(conn, System.Data.CommandType.Text, SQL_SELECT_ALL_DATABASES))
             {
                 while (rdr.Read())
                 {
@@ -95,6 +120,12 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
                 }
                 rdr.Close();
             }
+
+            if(conn != null && conn.State != System.Data.ConnectionState.Closed)
+            {
+                conn.Close();
+            }
+           
             return databases;
         }
           
@@ -107,12 +138,12 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         public List<FieldVO> GetFields(string tableName, ServerConfigDTO serverConfig, string db)
-        {
-            List<FieldVO> fields = new List<FieldVO>();
+        {          
             serverConfig.Database = db;
-            string connString = GetConnString(serverConfig);
-         
-            using (SqlDataReader rdr = Database.ExecuteReader(connString, System.Data.CommandType.Text, string.Format(SQL_GET_FIELDS, tableName)))
+            SqlConnection conn = GetConnection(serverConfig);            
+
+            List<FieldVO> fields = new List<FieldVO>();
+            using (SqlDataReader rdr = Database.ExecuteReader(conn, System.Data.CommandType.Text, string.Format(SQL_GET_FIELDS, tableName)))
             {
                 while (rdr.Read())
                 {
@@ -130,7 +161,12 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
                     fields.Add(vo);
                 }
                 rdr.Close();
-            }         
+            }
+
+            if (conn != null && conn.State != System.Data.ConnectionState.Closed)
+            {
+                conn.Close();
+            }
             return fields;
         }
 
@@ -142,10 +178,13 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
         /// <returns></returns>
         public List<TableVO> GetTables(ServerConfigDTO serverConfig, string db)
         {
-            List<TableVO> tables = new List<TableVO>();
+            
             serverConfig.Database = db;
-            string connString = GetConnString(serverConfig);            
-            using (SqlDataReader rdr = Database.ExecuteReader(connString, System.Data.CommandType.Text, SQL_SELECT_ALL_TABLES))
+            SqlConnection conn = GetConnection(serverConfig);
+
+            List<TableVO> tables = new List<TableVO>();
+
+            using (SqlDataReader rdr = Database.ExecuteReader(conn, System.Data.CommandType.Text, SQL_SELECT_ALL_TABLES))
             {
                 while (rdr.Read())
                 {
@@ -159,6 +198,10 @@ WHERE d.name='{0}' ORDER BY a.id,a.colorder";
                     tables.Add(vo);                                       
                 }
                 rdr.Close();
+            }
+            if (conn != null && conn.State != System.Data.ConnectionState.Closed)
+            {
+                conn.Close();
             }
             return tables;
         }

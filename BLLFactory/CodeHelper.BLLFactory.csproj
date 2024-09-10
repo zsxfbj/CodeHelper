@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Enum\CodeHelper.Enum.csproj" />
     <ProjectReference Include="..\IBLL\CodeHelper.IBLL.csproj" />
   </ItemGroup>

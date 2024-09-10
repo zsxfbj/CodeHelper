@@ -11,6 +11,11 @@ namespace CodeHelper.Model.DTO
     public class ServerConfigDTO
     {
         /// <summary>
+        /// 唯一编码
+        /// </summary>
+        public string Id { get; set; } = Guid.NewGuid().ToString("D").Replace("-", "");
+
+        /// <summary>
         /// 配置名称
         /// </summary>
         public string ConfigName { get; set; } = string.Empty;

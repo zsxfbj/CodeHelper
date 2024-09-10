@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DALFactory\CodeHelper.DALFactory.csproj" />
+    <ProjectReference Include="..\Enum\CodeHelper.Enum.csproj" />
+    <ProjectReference Include="..\IBLL\CodeHelper.IBLL.csproj" />
+    <ProjectReference Include="..\IDAL\CodeHelper.IDAL.csproj" />
+    <ProjectReference Include="..\Model\CodeHelper.Model.csproj" />
+    <ProjectReference Include="..\SQLServer\CodeHelper.SQLServerDAL.csproj" />
+    <ProjectReference Include="..\Utility\CodeHelper.Utility.csproj" />
+  </ItemGroup>
+
+</Project>

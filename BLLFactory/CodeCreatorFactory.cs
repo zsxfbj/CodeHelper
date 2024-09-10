@@ -7,18 +7,18 @@ namespace CodeHelper.BLLFactory
     /// <summary>
     /// 
     /// </summary>
-    public class DbCodeCreatorFactory
+    public class CodeCreatorFactory
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="dbType"></param>
         /// <returns></returns>
-        public static IDbCodeCreator Create(CodeTypes codeType = CodeTypes.CSharp)
+        public static ICodeCreator Create(CodeTypes codeType = CodeTypes.CSharp)
         {
             string path = "CodeHelper." + codeType.ToString() + "BLL";
-            string className = path + ".DbCodeCreator";
-            return MemcacheClient.CreateObject<IDbCodeCreator>(path, className);
+            string className = path + ".CodeCreator";
+            return MemcacheClient.CreateObject<ICodeCreator>(path, className);
         }
 
     }

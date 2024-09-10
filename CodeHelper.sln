@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.DALFactory", "DA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.BLLFactory", "BLLFactory\CodeHelper.BLLFactory.csproj", "{E1E75937-7F82-4F5F-8669-D1EFFA3F3553}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.CSharpBLL", "CSharpBLL\CodeHelper.CSharpBLL.csproj", "{7DDF9E33-BF40-40F3-8314-C2076B8115D6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeHelper.BLL", "BLL\CodeHelper.BLL.csproj", "{38E502E1-4A16-46E7-B95B-71A64F817F90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{E1E75937-7F82-4F5F-8669-D1EFFA3F3553}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E1E75937-7F82-4F5F-8669-D1EFFA3F3553}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E1E75937-7F82-4F5F-8669-D1EFFA3F3553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DDF9E33-BF40-40F3-8314-C2076B8115D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DDF9E33-BF40-40F3-8314-C2076B8115D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DDF9E33-BF40-40F3-8314-C2076B8115D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DDF9E33-BF40-40F3-8314-C2076B8115D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E502E1-4A16-46E7-B95B-71A64F817F90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E502E1-4A16-46E7-B95B-71A64F817F90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E502E1-4A16-46E7-B95B-71A64F817F90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E502E1-4A16-46E7-B95B-71A64F817F90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

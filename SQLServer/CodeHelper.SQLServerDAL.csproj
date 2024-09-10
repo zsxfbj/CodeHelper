@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IDAL\CodeHelper.IDAL.csproj" />
+    <ProjectReference Include="..\Utility\CodeHelper.Utility.csproj" />
   </ItemGroup>
 
 </Project>
